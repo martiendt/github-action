@@ -24,6 +24,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - run: pwd
     - run: npm ci
     - run: npm run build --if-present
     - run: sudo apt-get install rsync
@@ -38,4 +39,12 @@ jobs:
         dest: 'bim@"${{secrets.IP_ADDRESS}}":/home/bim/actions'
     - name: Display status from deploy
       run: echo "${{ steps.deploy.outputs.status }}"
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@v0.1.7
+      with:
+        host: ${{ secrets.IP_ADDRESS }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        script: whoami
  

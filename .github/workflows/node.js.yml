@@ -42,6 +42,6 @@ jobs:
         with:
           flags: '-avc --delete'
           src: 'build/'
-          dest: 'bim@"${{secrets.SERVER_IP}}":/home/bim/actions'
+          dest: 'bim@"${{secrets.IP_ADDRESS}}":/home/bim/actions'
       - name: Display status from deploy
         run: echo "${{ steps.deploy.outputs.status }}"

@@ -26,22 +26,16 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run build --if-present
-  copy:
-    needs: build
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - run: ls -la
-      - uses: actions/checkout@master
-      - run: sudo apt-get install rsync
-      - name: Deploy theme on server
-        id: deploy_theme
-        uses: Pendect/action-rsyncer@v1.1.0
-        env:
-          DEPLOY_KEY: ${{secrets.DEPLOY_KEY}}
-        with:
-          flags: '-avc --delete'
-          src: 'build/'
-          dest: 'bim@"${{secrets.IP_ADDRESS}}":/home/bim/actions'
-      - name: Display status from deploy
-        run: echo "${{ steps.deploy.outputs.status }}"
+    - run: sudo apt-get install rsync
+    - name: Deploy theme on server
+      id: deploy_theme
+      uses: Pendect/action-rsyncer@v1.1.0
+      env:
+        DEPLOY_KEY: ${{secrets.DEPLOY_KEY}}
+      with:
+        flags: '-avc --delete'
+        src: 'build/'
+        dest: 'bim@"${{secrets.IP_ADDRESS}}":/home/bim/actions'
+    - name: Display status from deploy
+      run: echo "${{ steps.deploy.outputs.status }}"
+ 
